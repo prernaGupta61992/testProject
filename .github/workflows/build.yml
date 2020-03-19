@@ -25,7 +25,7 @@ jobs:
     - name: Build and tag the image
       run: |
         docker build \ 
-          -t $CONTAINER_IMAGE:$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE ./app
+          -t $CONTAINER_IMAGE:$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE .
     - name: Push
       if: github.ref == 'refs/heads/master'
       run: |
