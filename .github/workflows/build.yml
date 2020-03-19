@@ -24,7 +24,7 @@ jobs:
         $( aws ecr get-login --no-include-email )
 
     - name: Build and tag the image
-       env:
+      env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: githubactions
         IMAGE_TAG: latest
