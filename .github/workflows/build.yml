@@ -22,9 +22,20 @@ jobs:
     - name: Setup ECR
       run: |
         $( aws ecr get-login --no-include-email )
+
     - name: Build and tag the image
+       env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: githubactions
+        IMAGE_TAG: latest
       run: |
-        docker build -t $CONTAINER_IMAGE$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$CONTAINER_IMAGE ./app
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+    
     - name: Push
       if: github.ref == 'refs/heads/master'
       run: |
